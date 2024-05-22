@@ -44,4 +44,11 @@ const checkDuplicateEmail = (email) => {
   return contacts.find((contact) => contact.email === email);
 };
 
-module.exports = { loadContacts, findContact, addContact, checkDuplicateEmail };
+// hapus kontak
+const deleteContact = (id) => {
+  const contacts = loadContacts();
+  const filteredContact = contacts.filter((contact) => contact.id !== id);
+  saveContact(filteredContact);
+};
+
+module.exports = { loadContacts, findContact, addContact, checkDuplicateEmail, deleteContact };
