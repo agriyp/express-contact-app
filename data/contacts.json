@@ -1,1 +1,4 @@
-[{"id":"1","nama":"Budi","nohp":"01213548","email":"budi@example.com"},{"id":"2","nama":"Ahmad","nohp":"08454513854","email":"ahmad@example.com"},{"id":"1716186881747","nama":"INTAN LESTARI NUR INAYAH","email":"agriyodiprayoga@gmail.com","nohp":"1231231"}]
+[
+  { "id": "1716374174062", "nama": "Idoy", "email": "idoy@gmail.com", "nohp": "08216978541" },
+  { "id": "1716374231079", "nama": "ZetX", "email": "zetx@mail.com", "nohp": "0821121212" }
+]

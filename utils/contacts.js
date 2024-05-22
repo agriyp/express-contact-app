@@ -51,4 +51,19 @@ const deleteContact = (id) => {
   saveContact(filteredContact);
 };
 
-module.exports = { loadContacts, findContact, addContact, checkDuplicateEmail, deleteContact };
+// update kontak
+const updateContact = (id, updateContact) => {
+  const contacts = loadContacts();
+  const index = contacts.findIndex((contact) => contact.id === id);
+  contacts[index] = updateContact;
+  saveContact(contacts);
+};
+
+module.exports = {
+  loadContacts,
+  findContact,
+  addContact,
+  checkDuplicateEmail,
+  deleteContact,
+  updateContact,
+};
