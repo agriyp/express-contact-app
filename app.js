@@ -6,6 +6,7 @@ const {
   addContact,
   checkDuplicateEmail,
   deleteContact,
+  updateContact,
 } = require('./utils/contacts');
 const { check, body, validationResult } = require('express-validator');
 const session = require('express-session');
@@ -57,6 +58,22 @@ app.get('/contact', (req, res) => {
   });
 });
 
+app.get('/contact/update/:id', (req, res) => {
+  const contact = findContact(req.params.id);
+
+  if (!contact) {
+    res.status(404);
+    res.send('<h1>404 Not Found</h1>');
+    return;
+  } else {
+    res.render('update-contact', {
+      layout: 'layouts/main-layout',
+      title: 'Update Data Kontak',
+      contact,
+    });
+  }
+});
+
 app.get('/contact/add', (req, res) => {
   res.render('add-contact', {
     layout: 'layouts/main-layout',
@@ -89,6 +106,37 @@ app.post(
       const data = { id: new Date().getTime().toString(), ...req.body };
       addContact(data);
       req.flash('msg', 'Data kontak berhasil ditambahkan!');
+      res.redirect('/contact');
+    }
+  }
+);
+
+app.post(
+  '/contact/update',
+  [
+    body('email').custom((value, { req }) => {
+      const duplikat = checkDuplicateEmail(value);
+      const oldEmail = req.body.email;
+      if (value !== oldEmail && duplikat) {
+        throw new Error('Email sudah digunakan!');
+      }
+      return true;
+    }),
+    check('nama', 'Minimal 3 karakter').isLength({ min: 3 }),
+    check('nohp', 'No Hp tidak valid!').isMobilePhone('id-ID'),
+  ],
+  (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      res.render('update-contact', {
+        layout: 'layouts/main-layout',
+        title: 'Ubah Data Kontak',
+        errors: errors.array(),
+        contact: req.body,
+      });
+    } else {
+      updateContact(req.body.id, req.body);
+      req.flash('msg', 'Data kontak berhasil diperbaharui!');
       res.redirect('/contact');
     }
   }
